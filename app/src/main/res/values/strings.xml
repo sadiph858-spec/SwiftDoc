@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LeafPDF</string>
+    <string name="splash_tagline">Your Smart PDF Reader</string>
+    <string name="tab_all">All Files</string><string name="tab_recent">Recent</string><string name="tab_favorites">Favorites</string>
+    <string name="search">Search</string><string name="search_hint">Search PDF files…</string>
+    <string name="open_pdf">Open PDF</string><string name="select_pdf">Select a PDF file</string>
+    <string name="share_pdf">Share PDF</string><string name="favorite">Favorite</string><string name="more_options">More options</string>
+    <string name="add_to_favorites">Add to Favorites</string><string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="remove_from_recent">Remove from Recent</string><string name="dark_mode">Dark Mode</string>
+    <string name="refresh">Refresh</string><string name="clear_recent">Clear Recent</string>
+    <string name="no_pdfs_found">No PDF files found.\nTap + to open a PDF.</string>
+    <string name="no_favorites">No favorites yet.\nTap ★ on any PDF.</string>
+    <string name="no_results">No PDFs match your search.</string>
+    <string name="loading_pdf">Loading PDF…</string>
+    <string name="added_to_favorites">Added to favorites ★</string><string name="removed_from_favorites">Removed from favorites</string>
+    <string name="removed_from_recent">Removed from recents</string><string name="recent_cleared">Recent files cleared</string>
+    <string name="file_not_found">File not found</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_rationale">LeafPDF needs storage permission to find PDF files on your device.</string>
+    <string name="grant">Grant Permission</string><string name="cancel">Cancel</string>
+    <string name="permission_denied_msg">Storage permission denied.\nTap + to open a PDF manually.</string>
+    <string name="error_opening_file">Could not open this file</string><string name="error_invalid_pdf">Not a valid PDF</string>
+    <string name="error_no_file">No file path provided</string><string name="error_file_not_found">File not found</string>
+    <string name="error_loading_pdf">Failed to load PDF</string><string name="error_sharing">Unable to share file</string>
+    <string name="page_indicator">%1$d / %2$d</string><string name="page_indicator_default">— / —</string>
+    <string name="go_to_first_page">Go to First Page</string><string name="go_to_last_page">Go to Last Page</string>
+</resources>

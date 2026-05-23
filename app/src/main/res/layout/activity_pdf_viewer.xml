@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/pdf_viewer_bg">
+    <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar_viewer"
+            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+            android:background="@color/viewer_toolbar_bg" app:titleTextColor="@color/white"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Dark"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <com.github.barteksc.pdfviewer.PDFView android:id="@+id/pdf_view"
+            android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone"/>
+        <LinearLayout android:id="@+id/layout_loading" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:orientation="vertical" android:gravity="center" android:background="@color/pdf_viewer_bg">
+            <ProgressBar android:id="@+id/progress_bar_viewer" android:layout_width="48dp" android:layout_height="48dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/loading_pdf" android:textColor="@color/white" android:layout_marginTop="12dp" android:textSize="14sp"/>
+        </LinearLayout>
+        <TextView android:id="@+id/tv_error" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="center" android:text="@string/error_loading_pdf"
+            android:textColor="#FF6B6B" android:textSize="15sp" android:gravity="center"
+            android:paddingLeft="32dp" android:paddingRight="32dp" android:visibility="gone"/>
+        <com.google.android.material.card.MaterialCardView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal" android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="#CC000000" app:cardCornerRadius="20dp" app:cardElevation="4dp" app:strokeWidth="0dp">
+            <TextView android:id="@+id/tv_page_indicator" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/page_indicator_default" android:textColor="@color/white" android:textSize="13sp"
+                android:paddingLeft="16dp" android:paddingRight="16dp" android:paddingTop="6dp" android:paddingBottom="6dp"/>
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@+id/fab_favorite"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end" android:layout_margin="20dp"
+        android:src="@drawable/ic_star_outline" android:contentDescription="@string/favorite"
+        app:backgroundTint="?attr/colorPrimary" app:tint="@color/white"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

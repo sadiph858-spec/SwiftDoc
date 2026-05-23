@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#FF3F51B5</color><color name="primary_dark">#FF303F9F</color>
+    <color name="primary_light">#FF7986CB</color><color name="accent">#FFE91E63</color>
+    <color name="white">#FFFFFFFF</color><color name="black">#FF000000</color>
+    <color name="background_light">#FFF5F5F5</color><color name="surface_light">#FFFFFFFF</color>
+    <color name="background_dark">#FF121212</color><color name="surface_dark">#FF1E1E1E</color>
+    <color name="splash_background">#FF3F51B5</color><color name="pdf_icon_bg">#FFE8EAF6</color>
+    <color name="pdf_viewer_bg">#FF2D2D2D</color><color name="viewer_toolbar_bg">#FF1A1A2E</color>
+    <color name="error_color">#FFB00020</color>
+</resources>

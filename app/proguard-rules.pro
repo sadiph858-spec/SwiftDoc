@@ -1,0 +1,5 @@
+-keep class com.smartpdf.reader.models.** { *; }
+-keep class com.github.barteksc.pdfviewer.** { *; }
+-dontwarn com.github.barteksc.**
+-keep class com.shockwave.pdfium.** { *; }
+-dontwarn com.shockwave.**
