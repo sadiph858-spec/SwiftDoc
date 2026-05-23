@@ -30,26 +30,14 @@ jobs:
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        continue-on-error: true
+        run: ./gradlew assembleDebug --no-daemon 2>&1 | tee gradle_output.txt
 
-      - name: List APK output
-        run: find . -name "*.apk" -ls
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v1.0-debug
-          name: LeafPDF Debug APK v1.0
-          body: |
-            ## LeafPDF Android App
-            Debug build - ready to install on Android
-            **Install:** Enable Unknown Sources → Install APK
-          files: app/build/outputs/apk/debug/app-debug.apk
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: LeafPDF-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30
+      - name: Commit build log to repo
+        run: |
+          git config user.email "ci@github.com"
+          git config user.name "CI Bot"
+          cp gradle_output.txt build_log_latest.txt
+          git add build_log_latest.txt
+          git commit -m "CI: build log [skip ci]"
+          git push
