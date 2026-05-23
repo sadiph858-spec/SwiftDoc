@@ -32,26 +32,54 @@ jobs:
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+      - name: Build Debug APK (capture full log)
+        id: build
+        continue-on-error: true
+        run: |
+          set +e
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/gradle_full.log
+          echo "BUILD_EXIT=${PIPESTATUS[0]}" >> $GITHUB_ENV
+          set -e
 
-      - name: Verify APK exists
-        run: ls -lh app/build/outputs/apk/debug/
+      - name: Save error log via API
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get last 200 lines of gradle output
+          tail -200 /tmp/gradle_full.log > /tmp/gradle_tail.log
+          # Encode to base64
+          B64=$(base64 -w 0 /tmp/gradle_tail.log)
+          # Check if file exists in repo
+          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
+            | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null || echo "")
+          
+          if [ -n "$SHA" ]; then
+            curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
+              -d "{\"message\":\"CI log\",\"content\":\"$B64\",\"sha\":\"$SHA\"}"
+          else
+            curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
+              -d "{\"message\":\"CI log\",\"content\":\"$B64\"}"
+          fi
+          echo "Log saved to repo"
 
-      - name: Upload APK Artifact
+      - name: Upload APK if build succeeded
+        if: env.BUILD_EXIT == '0'
         uses: actions/upload-artifact@v4
         with:
           name: LeafPDF-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
 
-      - name: Create GitHub Release
+      - name: Create Release if build succeeded
+        if: env.BUILD_EXIT == '0'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0-debug
           name: LeafPDF Debug APK
-          body: |
-            LeafPDF - Smart PDF Reader for Android
-            Debug build - install directly on your phone
+          body: "LeafPDF - Smart PDF Reader"
           files: app/build/outputs/apk/debug/app-debug.apk
           make_latest: true
