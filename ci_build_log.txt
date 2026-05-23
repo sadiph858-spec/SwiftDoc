@@ -1,0 +1,1 @@
+no main manifest attribute, in /home/runner/work/LeafPDF/LeafPDF/gradle/wrapper/gradle-wrapper.jar
