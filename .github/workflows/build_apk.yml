@@ -30,36 +30,24 @@ jobs:
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
       - name: Build Debug APK
-        id: build
-        run: |
-          ./gradlew assembleDebug --no-daemon 2>&1 | tee build_output.log
-          BUILD_EXIT=${PIPESTATUS[0]}
-          echo "exit_code=$BUILD_EXIT" >> $GITHUB_OUTPUT
-          if [ $BUILD_EXIT -eq 0 ]; then
-            echo "BUILD_SUCCESS=true" >> $GITHUB_ENV
-          else
-            echo "BUILD_SUCCESS=false" >> $GITHUB_ENV
-            # Commit the error log so we can read it
-            git config user.email "ci@github.com"
-            git config user.name "CI Bot"
-            tail -150 build_output.log > build_error.txt
-            git add build_error.txt
-            git commit -m "CI: save build error log" || true
-            git push || true
-          fi
+        run: ./gradlew assembleDebug --no-daemon
 
-      - name: Create GitHub Release with APK
-        if: env.BUILD_SUCCESS == 'true'
+      - name: List APK output
+        run: find . -name "*.apk" -ls
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0-debug
-          name: LeafPDF Debug APK
-          body: "LeafPDF Android App - Debug Build"
+          name: LeafPDF Debug APK v1.0
+          body: |
+            ## LeafPDF Android App
+            Debug build - ready to install on Android
+            **Install:** Enable Unknown Sources → Install APK
           files: app/build/outputs/apk/debug/app-debug.apk
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload APK Artifact
-        if: env.BUILD_SUCCESS == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: LeafPDF-debug-apk
