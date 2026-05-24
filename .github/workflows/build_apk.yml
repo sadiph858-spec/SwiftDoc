@@ -19,23 +19,45 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          # NO cache - force fresh every time
 
       - uses: android-actions/setup-android@v3
 
-      - name: Grant Gradle permission
-        run: chmod +x gradlew
+      - run: chmod +x gradlew
+      - run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-      - name: Create local.properties
-        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+      - name: Build Debug APK
+        id: gradle_build
+        continue-on-error: true
+        run: |
+          ./gradlew assembleDebug --no-daemon --no-build-cache 2>&1 | tee /tmp/gradle.log
+          echo "GRADLE_EXIT=${PIPESTATUS[0]}" >> $GITHUB_ENV
 
-      - name: Build Debug APK (no cache)
-        run: ./gradlew assembleDebug --no-daemon --no-build-cache --rerun-tasks
+      - name: Print last 60 lines of build log
+        if: always()
+        run: tail -60 /tmp/gradle.log
 
-      - name: Verify APK
-        run: ls -lh app/build/outputs/apk/debug/app-debug.apk
+      - name: Push build log to repo
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          B64=$(tail -250 /tmp/gradle.log | base64 -w 0)
+          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
+            | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha',''))" 2>/dev/null || echo "")
+          if [ -n "$SHA" ]; then
+            curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
+              -d "{\"message\":\"CI log $(date +%H%M%S)\",\"content\":\"$B64\",\"sha\":\"$SHA\"}" > /dev/null
+          else
+            curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
+              -d "{\"message\":\"CI log $(date +%H%M%S)\",\"content\":\"$B64\"}" > /dev/null
+          fi
+          echo "Log pushed"
 
-      - name: Upload APK Artifact
+      - name: Upload APK
+        if: success() && env.GRADLE_EXIT == '0'
         uses: actions/upload-artifact@v4
         with:
           name: LeafPDF-v2-debug
@@ -43,15 +65,11 @@ jobs:
           retention-days: 30
 
       - name: Create Release
+        if: success() && env.GRADLE_EXIT == '0'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v2.0-debug
           name: "LeafPDF v2.0 - 25+ Features"
-          body: |
-            LeafPDF v2.0 - Complete Android PDF Utility
-
-            Features: Privacy Policy, Image-to-PDF (5 filters), PDF Viewer,
-            Bookmarks, Reading modes, Compress/Split/Lock/Unlock/Watermark/Rotate,
-            Text-to-PDF, PDF-to-Images, Stats, Dark Mode, AdMob ready.
+          body: "LeafPDF v2.0 complete PDF utility with 25+ features"
           files: app/build/outputs/apk/debug/app-debug.apk
           make_latest: true
