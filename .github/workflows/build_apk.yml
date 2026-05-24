@@ -28,8 +28,14 @@ jobs:
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
+      - name: Clear Gradle Cache (force fresh build)
+        run: |
+          rm -rf ~/.gradle/caches/build-cache-*
+          rm -rf ~/.gradle/caches/modules-*/files-*/com.smartpdf.*
+          ./gradlew --stop 2>/dev/null || true
+
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon --rerun-tasks
 
       - name: Verify APK
         run: ls -lh app/build/outputs/apk/debug/app-debug.apk
@@ -47,35 +53,22 @@ jobs:
           tag_name: v2.0-debug
           name: "🍃 LeafPDF v2.0 - 25+ Features"
           body: |
-            ## 🍃 LeafPDF v2.0 - Complete PDF Utility
+            ## 🍃 LeafPDF v2.0
 
-            ### ✨ Features:
-            - 🔐 Privacy Policy consent flow (scroll-to-enable)
-            - 🖼️ Image → PDF with 5 pro filters (Original, Document, Grayscale, B&W, Bright)
-            - 📖 High-performance PDF viewer (lazy loading, 60FPS)
-            - 🔖 Bookmarks + Auto-resume from last page
-            - 🌙 Day / Night / Sepia reading modes
-            - ☀️ Brightness control slider
-            - ↔️ Horizontal/Vertical scroll toggle
-            - ⏩ Auto-scroll mode
-            - 🗜️ Compress PDF
-            - ✂️ Split PDF
-            - 🔒 Lock PDF with password
-            - 🔓 Unlock PDF
-            - 💧 Add Watermark
-            - 🔄 Rotate Pages
-            - 📄 Text → PDF
-            - 🖼️ PDF → Images (export to Gallery)
+            **25+ Premium Features:**
+            - 🔐 Privacy Policy consent (scroll-to-enable buttons)
+            - 🖼️ Image→PDF with 5 pro filters
+            - 📖 High-performance PDF viewer
+            - 🔖 Bookmarks + Auto-resume
+            - 🌙 Day/Night/Sepia modes + Brightness
+            - ↔️ Horizontal/Vertical scroll + Auto-scroll
+            - 🗜️ Compress, ✂️ Split, 🔒 Lock/Unlock PDF
+            - 💧 Watermark, 🔄 Rotate, 📄 Text→PDF
+            - 🖼️ PDF→Images (save to Gallery)
             - 📊 Reading Statistics
-            - 🌙 Dark Mode toggle
-            - 🖨️ Print support
-            - 📤 Share PDF
-            - 📋 Grid / List view toggle
-            - 🔤 Sort by Name / Date / Size
-            - 💚 AdMob ready (hidden until ad IDs configured)
-            - 🌿 Nature-inspired Green theme
+            - 🌿 Green Material Design 3 theme
+            - 💚 AdMob ready (auto-hidden until configured)
 
-            ### 📲 Install:
-            Enable *Unknown Sources* → Install APK
+            **Install:** Enable Unknown Sources → Install APK
           files: app/build/outputs/apk/debug/app-debug.apk
           make_latest: true
