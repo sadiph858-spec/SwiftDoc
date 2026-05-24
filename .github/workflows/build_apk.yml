@@ -14,11 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+          # NO cache - force fresh every time
 
       - uses: android-actions/setup-android@v3
 
@@ -28,14 +29,8 @@ jobs:
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-      - name: Clear Gradle Cache (force fresh build)
-        run: |
-          rm -rf ~/.gradle/caches/build-cache-*
-          rm -rf ~/.gradle/caches/modules-*/files-*/com.smartpdf.*
-          ./gradlew --stop 2>/dev/null || true
-
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon --rerun-tasks
+      - name: Build Debug APK (no cache)
+        run: ./gradlew assembleDebug --no-daemon --no-build-cache --rerun-tasks
 
       - name: Verify APK
         run: ls -lh app/build/outputs/apk/debug/app-debug.apk
@@ -51,24 +46,12 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v2.0-debug
-          name: "🍃 LeafPDF v2.0 - 25+ Features"
+          name: "LeafPDF v2.0 - 25+ Features"
           body: |
-            ## 🍃 LeafPDF v2.0
+            LeafPDF v2.0 - Complete Android PDF Utility
 
-            **25+ Premium Features:**
-            - 🔐 Privacy Policy consent (scroll-to-enable buttons)
-            - 🖼️ Image→PDF with 5 pro filters
-            - 📖 High-performance PDF viewer
-            - 🔖 Bookmarks + Auto-resume
-            - 🌙 Day/Night/Sepia modes + Brightness
-            - ↔️ Horizontal/Vertical scroll + Auto-scroll
-            - 🗜️ Compress, ✂️ Split, 🔒 Lock/Unlock PDF
-            - 💧 Watermark, 🔄 Rotate, 📄 Text→PDF
-            - 🖼️ PDF→Images (save to Gallery)
-            - 📊 Reading Statistics
-            - 🌿 Green Material Design 3 theme
-            - 💚 AdMob ready (auto-hidden until configured)
-
-            **Install:** Enable Unknown Sources → Install APK
+            Features: Privacy Policy, Image-to-PDF (5 filters), PDF Viewer,
+            Bookmarks, Reading modes, Compress/Split/Lock/Unlock/Watermark/Rotate,
+            Text-to-PDF, PDF-to-Images, Stats, Dark Mode, AdMob ready.
           files: app/build/outputs/apk/debug/app-debug.apk
           make_latest: true
