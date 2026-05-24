@@ -13,50 +13,69 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
+
       - uses: android-actions/setup-android@v3
-      - run: chmod +x gradlew
-      - run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
+      - name: Grant Gradle permission
+        run: chmod +x gradlew
+
+      - name: Create local.properties
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon 2>&1 | tee gradle_out.txt; echo "EXIT=${PIPESTATUS[0]}" >> $GITHUB_ENV
-      - name: Save log to repo
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          B64=$(tail -200 gradle_out.txt | base64 -w 0)
-          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null || echo "")
-          if [ -n "$SHA" ]; then
-            curl -s -X PUT -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" -d "{\"message\":\"CI log\",\"content\":\"$B64\",\"sha\":\"$SHA\"}" > /dev/null
-          else
-            curl -s -X PUT -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" -d "{\"message\":\"CI log\",\"content\":\"$B64\"}" > /dev/null
-          fi
-      - name: Upload APK
-        if: env.EXIT == '0'
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Verify APK
+        run: ls -lh app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: LeafPDF-v2-debug
           path: app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
+
       - name: Create Release
-        if: env.EXIT == '0'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v2.0-debug
-          name: LeafPDF v2.0 - 25+ Features
+          name: "🍃 LeafPDF v2.0 - 25+ Features"
           body: |
-            ## 🍃 LeafPDF v2.0
-            **25+ Premium Features:**
-            - Privacy Policy consent flow
-            - Image to PDF with 5 filters
-            - Compress, Split, Lock/Unlock, Watermark, Rotate PDF
-            - Text to PDF, PDF to Images
-            - Bookmarks, Auto-scroll, Reading modes
-            - Statistics dashboard
-            - AdMob ready (hidden until configured)
+            ## 🍃 LeafPDF v2.0 - Complete PDF Utility
+
+            ### ✨ Features:
+            - 🔐 Privacy Policy consent flow (scroll-to-enable)
+            - 🖼️ Image → PDF with 5 pro filters (Original, Document, Grayscale, B&W, Bright)
+            - 📖 High-performance PDF viewer (lazy loading, 60FPS)
+            - 🔖 Bookmarks + Auto-resume from last page
+            - 🌙 Day / Night / Sepia reading modes
+            - ☀️ Brightness control slider
+            - ↔️ Horizontal/Vertical scroll toggle
+            - ⏩ Auto-scroll mode
+            - 🗜️ Compress PDF
+            - ✂️ Split PDF
+            - 🔒 Lock PDF with password
+            - 🔓 Unlock PDF
+            - 💧 Add Watermark
+            - 🔄 Rotate Pages
+            - 📄 Text → PDF
+            - 🖼️ PDF → Images (export to Gallery)
+            - 📊 Reading Statistics
+            - 🌙 Dark Mode toggle
+            - 🖨️ Print support
+            - 📤 Share PDF
+            - 📋 Grid / List view toggle
+            - 🔤 Sort by Name / Date / Size
+            - 💚 AdMob ready (hidden until ad IDs configured)
+            - 🌿 Nature-inspired Green theme
+
+            ### 📲 Install:
+            Enable *Unknown Sources* → Install APK
           files: app/build/outputs/apk/debug/app-debug.apk
           make_latest: true
