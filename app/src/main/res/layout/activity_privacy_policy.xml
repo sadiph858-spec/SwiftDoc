@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="?attr/colorSurface">
+    <!-- Header -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:background="@color/primary"
+        android:paddingLeft="20dp" android:paddingRight="20dp"
+        android:paddingTop="48dp" android:paddingBottom="16dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="🍃 LeafPDF" android:textSize="22sp" android:textStyle="bold" android:textColor="@color/white"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/privacy_title" android:textSize="16sp" android:textColor="#BDFFFFFF" android:layout_marginTop="4dp"/>
+    </LinearLayout>
+    <!-- Scroll hint -->
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/scroll_hint" android:textSize="13sp"
+        android:textColor="@color/primary" android:gravity="center"
+        android:background="#FFF1F8E9" android:paddingVertical="8dp"/>
+    <!-- Scrollable policy -->
+    <ScrollView android:id="@+id/scroll_policy" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1"
+        android:paddingLeft="20dp" android:paddingRight="20dp" android:paddingTop="16dp" android:paddingBottom="16dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/privacy_text" android:textSize="14sp" android:lineSpacingMultiplier="1.5"
+            android:textColor="?attr/colorOnSurface"/>
+    </ScrollView>
+    <!-- Buttons -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:padding="16dp" android:gravity="center"
+        android:background="?attr/colorSurface" android:elevation="8dp">
+        <Button android:id="@+id/btn_deny" android:layout_width="0dp" android:layout_height="52dp"
+            android:layout_weight="1" android:text="@string/btn_deny" android:textColor="@color/white"
+            android:backgroundTint="@color/privacy_deny" android:layout_marginEnd="8dp"
+            android:cornerRadius="12dp"/>
+        <Button android:id="@+id/btn_allow" android:layout_width="0dp" android:layout_height="52dp"
+            android:layout_weight="1" android:text="@string/btn_allow" android:textColor="@color/white"
+            android:backgroundTint="@color/privacy_allow" android:layout_marginStart="8dp"
+            android:cornerRadius="12dp"/>
+    </LinearLayout>
+</LinearLayout>

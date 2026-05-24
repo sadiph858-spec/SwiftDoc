@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_share" android:title="@string/share_pdf" android:icon="@drawable/ic_share" app:showAsAction="ifRoom"/>
-    <item android:id="@+id/action_go_to_first" android:title="@string/go_to_first_page" app:showAsAction="never"/>
-    <item android:id="@+id/action_go_to_last" android:title="@string/go_to_last_page" app:showAsAction="never"/>
+    <item android:id="@+id/action_share" android:title="Share" android:icon="@drawable/ic_share" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_jump" android:title="Jump to Page" app:showAsAction="never"/>
+    <item android:id="@+id/action_bookmarks" android:title="Bookmarks" app:showAsAction="never"/>
+    <item android:id="@+id/action_read_mode" android:title="Reading Mode" app:showAsAction="never"/>
+    <item android:id="@+id/action_fullscreen" android:title="Full Screen" app:showAsAction="never"/>
+    <item android:id="@+id/action_scroll_dir" android:title="Toggle Scroll Direction" app:showAsAction="never"/>
+    <item android:id="@+id/action_auto_scroll" android:title="Auto Scroll" app:showAsAction="never"/>
+    <item android:id="@+id/action_first" android:title="First Page" app:showAsAction="never"/>
+    <item android:id="@+id/action_last" android:title="Last Page" app:showAsAction="never"/>
+    <item android:id="@+id/action_print" android:title="Print" app:showAsAction="never"/>
 </menu>

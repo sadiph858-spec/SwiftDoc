@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.LeafPDF" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item><item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item><item name="android:colorBackground">@color/background_light</item>
-        <item name="colorSurface">@color/surface_light</item><item name="android:statusBarColor">@color/primary_dark</item>
-    </style>
-    <style name="Theme.LeafPDF.Splash" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:colorBackground">@color/background_light</item>
+        <item name="colorSurface">@color/surface_light</item>
         <item name="android:statusBarColor">@color/primary_dark</item>
     </style>
-    <style name="BottomSheetStyle" parent="Theme.Material3.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomSheetShape</item>
+    <style name="Theme.LeafPDF.Splash" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@color/splash_bg</item>
+        <item name="android:statusBarColor">@color/splash_bg</item>
     </style>
-    <style name="BottomSheetShape" parent="Widget.Material3.BottomSheet.Modal">
-        <item name="shapeAppearance">@style/BSAppearance</item>
+    <style name="Theme.LeafPDF.NoActionBar" parent="Theme.LeafPDF">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
-    <style name="BSAppearance" parent="ShapeAppearance.Material3.LargeComponent">
-        <item name="cornerFamily">rounded</item><item name="cornerSizeTopLeft">20dp</item>
-        <item name="cornerSizeTopRight">20dp</item><item name="cornerSizeBottomLeft">0dp</item><item name="cornerSizeBottomRight">0dp</item>
-    </style>
+    <style name="BottomSheetStyle" parent="Theme.Material3.Light.BottomSheetDialog"/>
 </resources>
