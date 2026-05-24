@@ -32,10 +32,10 @@
         <Button android:id="@+id/btn_deny" android:layout_width="0dp" android:layout_height="52dp"
             android:layout_weight="1" android:text="@string/btn_deny" android:textColor="@color/white"
             android:backgroundTint="@color/privacy_deny" android:layout_marginEnd="8dp"
-            android:cornerRadius="12dp"/>
+            style="@style/Widget.Material3.Button.TonalButton"/>
         <Button android:id="@+id/btn_allow" android:layout_width="0dp" android:layout_height="52dp"
             android:layout_weight="1" android:text="@string/btn_allow" android:textColor="@color/white"
             android:backgroundTint="@color/privacy_allow" android:layout_marginStart="8dp"
-            android:cornerRadius="12dp"/>
+            style="@style/Widget.Material3.Button.TonalButton"/>
     </LinearLayout>
 </LinearLayout>
