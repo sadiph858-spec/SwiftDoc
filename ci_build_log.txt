@@ -23,8 +23,8 @@ Daemon will be stopped at the end of the build
 > Task :app:parseDebugLocalResources
 > Task :app:javaPreCompileDebug
 > Task :app:dataBindingGenBaseClassesDebug
-> Task :app:mapDebugSourceSetPaths
 > Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
 > Task :app:processDebugMainManifest
@@ -34,22 +34,12 @@ Daemon will be stopped at the end of the build
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
-> Task :app:processDebugManifestForPackage
 > Task :app:checkDebugDuplicateClasses
-> Task :app:processDebugResources
 > Task :app:desugarDebugFileDependencies
-
-> Task :app:compileDebugJavaWithJavac
-Note: Some input files use or override a deprecated API.
-Note: Recompile with -Xlint:deprecation for details.
-
-> Task :app:processDebugJavaRes
-> Task :app:mergeDebugJavaResource
+> Task :app:processDebugManifestForPackage
 > Task :app:mergeExtDexDebug
-> Task :app:mergeLibDexDebug
-> Task :app:dexBuilderDebug
 > Task :app:mergeDebugJniLibFolders
-> Task :app:mergeProjectDexDebug
+> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -58,9 +48,19 @@ Note: Recompile with -Xlint:deprecation for details.
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libc++_shared.so, libjniPdfium.so, libmodft2.so, libmodpdfium.so, libmodpng.so.
 
+> Task :app:processDebugResources
+
+> Task :app:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:processDebugJavaRes
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 1m 37s
+BUILD SUCCESSFUL in 1m 46s
 35 actionable tasks: 35 executed
