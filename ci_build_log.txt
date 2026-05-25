@@ -15,9 +15,9 @@ Daemon will be stopped at the end of the build
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
-> Task :app:dataBindingMergeDependencyArtifactsDebug
 > Task :app:generateDebugResValues
 > Task :app:generateDebugResources
+> Task :app:dataBindingMergeDependencyArtifactsDebug
 > Task :app:packageDebugResources
 > Task :app:mergeDebugResources
 > Task :app:parseDebugLocalResources
@@ -43,11 +43,11 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
-> Task :app:writeDebugSigningConfigVersions
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libc++_shared.so, libjniPdfium.so, libmodft2.so, libmodpdfium.so, libmodpng.so.
 
+> Task :app:writeDebugSigningConfigVersions
 > Task :app:processDebugResources
 
 > Task :app:compileDebugJavaWithJavac
@@ -56,11 +56,11 @@ Note: Recompile with -Xlint:deprecation for details.
 
 > Task :app:processDebugJavaRes
 > Task :app:dexBuilderDebug
-> Task :app:mergeProjectDexDebug
 > Task :app:mergeDebugJavaResource
+> Task :app:mergeProjectDexDebug
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
 
-BUILD SUCCESSFUL in 1m 46s
+BUILD SUCCESSFUL in 1m 26s
 35 actionable tasks: 35 executed
