@@ -1,6 +1,108 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="110dp" android:height="110dp" android:viewportWidth="110" android:viewportHeight="110">
-    <path android:fillColor="#FFFFFF" android:pathData="M55,10 C55,10 20,30 20,65 C20,82 35,95 55,95 C75,95 90,82 90,65 C90,30 55,10 55,10 Z"/>
-    <path android:fillColor="#4CAF50" android:pathData="M55,20 L55,90" android:strokeColor="#4CAF50" android:strokeWidth="3"/>
-    <path android:fillColor="#2E7D32" android:pathData="M55,10 C55,10 25,32 22,65 C20,82 35,95 55,95 C55,95 30,78 32,58 C34,38 55,10 55,10 Z"/>
-    <path android:fillColor="#388E3C" android:pathData="M55,10 C55,10 85,32 88,65 C90,82 75,95 55,95 C55,95 80,78 78,58 C76,38 55,10 55,10 Z"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background circle - deep green gradient effect -->
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M0,0 L108,0 L108,108 L0,108 Z"/>
+
+    <!-- Soft inner circle glow -->
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M54,8 A46,46 0 1,1 53.99,8 Z"/>
+
+    <!-- Book / document base (white) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M28,30 L28,82 Q28,86 32,86 L76,86 Q80,86 80,82 L80,30 Q80,26 76,26 L32,26 Q28,26 28,30 Z"/>
+
+    <!-- Book spine shadow -->
+    <path
+        android:fillColor="#E8F5E9"
+        android:pathData="M28,26 L36,26 L36,86 L28,86 Z"/>
+
+    <!-- Book page lines -->
+    <path
+        android:fillColor="#C8E6C9"
+        android:pathData="M42,42 L72,42 Q73,42 73,43 L73,44 Q73,45 72,45 L42,45 Q41,45 41,44 L41,43 Q41,42 42,42 Z"/>
+    <path
+        android:fillColor="#C8E6C9"
+        android:pathData="M42,51 L72,51 Q73,51 73,52 L73,53 Q73,54 72,54 L42,54 Q41,54 41,53 L41,52 Q41,51 42,51 Z"/>
+    <path
+        android:fillColor="#C8E6C9"
+        android:pathData="M42,60 L65,60 Q66,60 66,61 L66,62 Q66,63 65,63 L42,63 Q41,63 41,62 L41,61 Q41,60 42,60 Z"/>
+
+    <!-- Leaf growing from book - bright green -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M54,22 C54,22 38,32 38,50 C38,62 46,70 54,70 C62,70 70,62 70,50 C70,32 54,22 54,22 Z"/>
+
+    <!-- Leaf center vein -->
+    <path
+        android:fillColor="#1B5E20"
+        android:strokeColor="#1B5E20"
+        android:strokeWidth="1.5"
+        android:pathData="M54,24 L54,70"/>
+
+    <!-- Leaf left veins -->
+    <path
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M54,36 C54,36 46,40 42,46"/>
+    <path
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M54,44 C54,44 47,47 44,53"/>
+    <path
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M54,52 C54,52 48,54 46,59"/>
+
+    <!-- Leaf right veins -->
+    <path
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M54,36 C54,36 62,40 66,46"/>
+    <path
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M54,44 C54,44 61,47 64,53"/>
+    <path
+        android:strokeColor="#2E7D32"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M54,52 C54,52 60,54 62,59"/>
+
+    <!-- Leaf shine highlight -->
+    <path
+        android:fillColor="#A5D6A7"
+        android:pathData="M50,26 C50,26 40,35 40,48 C40,52 42,56 44,58 C38,52 38,42 50,26 Z"/>
+
+    <!-- PDF label badge at bottom -->
+    <path
+        android:fillColor="#E91E63"
+        android:pathData="M36,74 L72,74 Q76,74 76,77 L76,84 Q76,87 72,87 L36,87 Q32,87 32,84 L32,77 Q32,74 36,74 Z"/>
+
+    <!-- PDF text in badge (white) -->
+    <!-- P -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M37,77 L37,85 L39,85 L39,82.5 L41,82.5 C42.2,82.5 43,81.8 43,80.5 C43,79.2 42.2,77 41,77 Z M39,78.5 L40.5,78.5 C41,78.5 41.3,78.9 41.3,80.5 C41.3,81.1 41,81.5 40.5,81.5 L39,81.5 Z"/>
+    <!-- D -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M44,77 L44,85 L46.5,85 C48.5,85 50,83.5 50,81 C50,78.5 48.5,77 46.5,77 Z M46,78.5 L46.5,78.5 C47.5,78.5 48.2,79.2 48.2,81 C48.2,82.8 47.5,83.5 46.5,83.5 L46,83.5 Z"/>
+    <!-- F -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M51,77 L51,85 L53,85 L53,82 L56,82 L56,80.5 L53,80.5 L53,78.5 L56.5,78.5 L56.5,77 Z"/>
+
 </vector>
