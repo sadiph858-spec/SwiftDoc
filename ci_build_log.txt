@@ -15,16 +15,16 @@ Daemon will be stopped at the end of the build
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:dataBindingMergeDependencyArtifactsDebug
 > Task :app:generateDebugResValues
 > Task :app:generateDebugResources
-> Task :app:dataBindingMergeDependencyArtifactsDebug
 > Task :app:packageDebugResources
 > Task :app:mergeDebugResources
 > Task :app:parseDebugLocalResources
 > Task :app:javaPreCompileDebug
 > Task :app:dataBindingGenBaseClassesDebug
-> Task :app:checkDebugAarMetadata
 > Task :app:mapDebugSourceSetPaths
+> Task :app:checkDebugAarMetadata
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
 > Task :app:processDebugMainManifest
@@ -41,26 +41,29 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugJniLibFolders
 > Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs
-> Task :app:validateSigningDebug
-> Task :app:writeDebugAppMetadata
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libc++_shared.so, libjniPdfium.so, libmodft2.so, libmodpdfium.so, libmodpng.so.
 
-> Task :app:writeDebugSigningConfigVersions
-> Task :app:processDebugResources
+> Task :app:processDebugResources FAILED
+> Task :app:validateSigningDebug
 
-> Task :app:compileDebugJavaWithJavac
-Note: Some input files use or override a deprecated API.
-Note: Recompile with -Xlint:deprecation for details.
+FAILURE: Build failed with an exception.
 
-> Task :app:processDebugJavaRes
-> Task :app:dexBuilderDebug
-> Task :app:mergeDebugJavaResource
-> Task :app:mergeProjectDexDebug
-> Task :app:packageDebug
-> Task :app:createDebugApkListingFileRedirect
-> Task :app:assembleDebug
+* What went wrong:
+Execution failed for task ':app:processDebugResources'.
+> A failure occurred while executing com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask$TaskAction
+   > Android resource linking failed
+     com.smartpdf.reader.app-mergeDebugResources-43:/layout/activity_splash.xml:18: error: resource drawable/circle_bg (aka com.smartpdf.reader:drawable/circle_bg) not found.
+     com.smartpdf.reader.app-mergeDebugResources-43:/layout/activity_splash.xml:29: error: resource drawable/circle_bg (aka com.smartpdf.reader:drawable/circle_bg) not found.
+     error: failed linking file resources.
 
-BUILD SUCCESSFUL in 1m 26s
-35 actionable tasks: 35 executed
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 37s
+26 actionable tasks: 26 executed
