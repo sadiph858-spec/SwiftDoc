@@ -45,25 +45,22 @@ Daemon will be stopped at the end of the build
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libc++_shared.so, libjniPdfium.so, libmodft2.so, libmodpdfium.so, libmodpng.so.
 
-> Task :app:processDebugResources FAILED
+> Task :app:processDebugResources
 > Task :app:validateSigningDebug
 
-FAILURE: Build failed with an exception.
+> Task :app:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
 
-* What went wrong:
-Execution failed for task ':app:processDebugResources'.
-> A failure occurred while executing com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask$TaskAction
-   > Android resource linking failed
-     com.smartpdf.reader.app-mergeDebugResources-43:/layout/activity_splash.xml:18: error: resource drawable/circle_bg (aka com.smartpdf.reader:drawable/circle_bg) not found.
-     com.smartpdf.reader.app-mergeDebugResources-43:/layout/activity_splash.xml:29: error: resource drawable/circle_bg (aka com.smartpdf.reader:drawable/circle_bg) not found.
-     error: failed linking file resources.
+> Task :app:processDebugJavaRes
+> Task :app:dexBuilderDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeDebugJavaResource
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
 
-
-* Try:
-> Run with --stacktrace option to get the stack trace.
-> Run with --info or --debug option to get more log output.
-> Run with --scan to get full insights.
-> Get more help at https://help.gradle.org.
-
-BUILD FAILED in 1m 37s
-26 actionable tasks: 26 executed
+BUILD SUCCESSFUL in 1m 45s
+35 actionable tasks: 35 executed
