@@ -1,4 +1,4 @@
-name: Build LeafPDF APK
+name: Build LeafPDF Signed Release APK
 
 on:
   push:
@@ -25,51 +25,71 @@ jobs:
       - run: chmod +x gradlew
       - run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-      - name: Build Debug APK
-        id: gradle_build
-        continue-on-error: true
+      - name: Decode Keystore
         run: |
-          ./gradlew assembleDebug --no-daemon --no-build-cache 2>&1 | tee /tmp/gradle.log
-          echo "GRADLE_EXIT=${PIPESTATUS[0]}" >> $GITHUB_ENV
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > app/leafpdf-release.keystore
+          echo "Keystore decoded: $(ls -lh app/leafpdf-release.keystore)"
 
-      - name: Print last 60 lines of build log
-        if: always()
-        run: tail -60 /tmp/gradle.log
+      - name: Build Release APK (Signed)
+        env:
+          KEYSTORE_PATH: leafpdf-release.keystore
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          ./gradlew assembleRelease --no-daemon --no-build-cache 2>&1 | tee /tmp/gradle.log
+          echo "Build exit: ${PIPESTATUS[0]}"
 
-      - name: Push build log to repo
-        if: always()
+      - name: Save log on failure
+        if: failure()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          B64=$(tail -250 /tmp/gradle.log | base64 -w 0)
+          B64=$(tail -200 /tmp/gradle.log | base64 -w 0)
           SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
             | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha',''))" 2>/dev/null || echo "")
           if [ -n "$SHA" ]; then
             curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
               "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
-              -d "{\"message\":\"CI log $(date +%H%M%S)\",\"content\":\"$B64\",\"sha\":\"$SHA\"}" > /dev/null
+              -d "{\"message\":\"CI log\",\"content\":\"$B64\",\"sha\":\"$SHA\"}" > /dev/null
           else
             curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
               "https://api.github.com/repos/${{ github.repository }}/contents/ci_build_log.txt" \
-              -d "{\"message\":\"CI log $(date +%H%M%S)\",\"content\":\"$B64\"}" > /dev/null
+              -d "{\"message\":\"CI log\",\"content\":\"$B64\"}" > /dev/null
           fi
-          echo "Log pushed"
 
-      - name: Upload APK
-        if: success() && env.GRADLE_EXIT == '0'
+      - name: Verify Signed APK
+        run: |
+          APK_PATH="app/build/outputs/apk/release/app-release.apk"
+          ls -lh $APK_PATH
+          echo "APK size: $(du -sh $APK_PATH | cut -f1)"
+
+      - name: Upload Signed APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: LeafPDF-v2-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: LeafPDF-v2-release-signed
+          path: app/build/outputs/apk/release/app-release.apk
           retention-days: 30
 
-      - name: Create Release
-        if: success() && env.GRADLE_EXIT == '0'
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v2.0-debug
-          name: "LeafPDF v2.0 - 25+ Features"
-          body: "LeafPDF v2.0 complete PDF utility with 25+ features"
-          files: app/build/outputs/apk/debug/app-debug.apk
+          tag_name: v2.0-release
+          name: "LeafPDF v2.0 - Signed Release"
+          body: |
+            ## LeafPDF v2.0 - Signed Release APK
+            
+            **Ready for Play Store upload!**
+            
+            Signed with:
+            - Key alias: leafpdf
+            - Validity: 10,000 days (~27 years)
+            - Algorithm: RSA 2048-bit
+            
+            Features: 25+ PDF tools, Privacy Policy, Image-to-PDF,
+            Fast PDF viewer, Bookmarks, Dark mode, AdMob ready.
+            
+            Install: Enable Unknown Sources -> Install APK
+          files: app/build/outputs/apk/release/app-release.apk
           make_latest: true
