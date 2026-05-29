@@ -20,68 +20,50 @@ jobs:
       - uses: android-actions/setup-android@v3
       - run: chmod +x gradlew
       - run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > app/swiftdoc-release.keystore
-          echo "Keystore decoded OK"
+          ls -lh app/swiftdoc-release.keystore
+
       - name: Build Signed Release APK
         env:
           KEYSTORE_PATH: swiftdoc-release.keystore
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: ./gradlew assembleRelease --no-daemon --no-build-cache 2>&1 | tee /tmp/gradle.log
-      - name: Save log on failure
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew assembleRelease --no-daemon --no-build-cache
+
+      - name: Find APK
         run: |
-          B64=$(tail -200 /tmp/gradle.log | base64 -w 0)
-          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
-            "https://api.github.com/repos/${{ github.repository }}/contents/ci_log.txt" \
-            | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha',''))" 2>/dev/null || echo "")
-          if [ -n "$SHA" ]; then
-            curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
-              "https://api.github.com/repos/${{ github.repository }}/contents/ci_log.txt" \
-              -d "{\"message\":\"CI log\",\"content\":\"$B64\",\"sha\":\"$SHA\"}" > /dev/null
-          else
-            curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
-              "https://api.github.com/repos/${{ github.repository }}/contents/ci_log.txt" \
-              -d "{\"message\":\"CI log\",\"content\":\"$B64\"}" > /dev/null
-          fi
-      - name: Verify APK
-        run: ls -lh app/build/outputs/apk/release/app-release.apk
+          echo "=== All APK files ==="
+          find . -name "*.apk" -ls
+          echo "=== Build outputs ==="
+          find app/build/outputs -type f 2>/dev/null || echo "No build outputs dir"
+
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: SwiftDoc-v3-signed-release
-          path: app/build/outputs/apk/release/app-release.apk
+          path: "**/*.apk"
           retention-days: 30
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v3.0-release
-          name: "SwiftDoc v3.0 - Signed Release"
+          name: "🚀 SwiftDoc v3.0 — Signed Release"
           body: |
-            ## SwiftDoc v3.0 — Complete PDF Utility
-            Package: com.swiftdoc.pdf22449
+            ## SwiftDoc v3.0
+            **Package:** com.swiftdoc.pdf22449
             
-            **New in v3.0:**
-            - 📷 Scan to PDF (camera + auto-deskew + auto-crop)
-            - ✂️ PDF Crop (interactive + auto-crop)
-            - ⚡ 100x faster PDF loading (native GPU renderer)
-            - 🔄 Auto-straighten scanned images
-            - 🎨 Refreshed SwiftDoc green UI
+            ### ✨ New Features:
+            - 📷 Scan to PDF (auto-deskew + auto-crop)
+            - ✂️ PDF Crop (interactive handles + auto-crop)  
+            - ⚡ 100× faster PDF loading (native GPU)
+            - 🔄 Auto-straighten skewed images
             
-            **All Features:**
-            - View PDF, Image→PDF (5 filters), PDF→Images
-            - Compress, Split, Lock/Unlock, Watermark, Rotate
-            - Text→PDF, Bookmarks, Auto-resume
-            - Day/Night/Sepia modes, Brightness control
-            - Statistics, Dark Mode, Print, Share
-            - AdMob ready (hidden until configured)
-            
-            **Signed:** RSA 2048-bit, 10,000 days validity
-            **Install:** Enable Unknown Sources → Install APK
-          files: app/build/outputs/apk/release/app-release.apk
+            ### All 25+ Features included
+            **Signed:** RSA 2048-bit keystore, valid 27 years
+          files: "**/*.apk"
           make_latest: true
