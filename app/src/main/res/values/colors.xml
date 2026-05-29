@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- LeafPDF Green Theme -->
+    <!-- SwiftDoc Green Theme -->
     <color name="primary">#FF2E7D32</color>
     <color name="primary_dark">#FF1B5E20</color>
     <color name="primary_light">#FF4CAF50</color>

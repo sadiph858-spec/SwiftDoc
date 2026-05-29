@@ -7,7 +7,7 @@
         android:paddingLeft="20dp" android:paddingRight="20dp"
         android:paddingTop="48dp" android:paddingBottom="16dp">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="LeafPDF" android:textSize="22sp" android:textStyle="bold" android:textColor="@color/white"/>
+            android:text="SwiftDoc" android:textSize="22sp" android:textStyle="bold" android:textColor="@color/white"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="@string/privacy_title" android:textSize="16sp" android:textColor="#BDFFFFFF" android:layout_marginTop="4dp"/>
     </LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/pdf_viewer_bg">
+    <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar_crop"
+            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+            android:background="@color/viewer_toolbar_bg" app:titleTextColor="@color/white"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <TextView android:id="@+id/tv_crop_info" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Loading…"
+        android:textColor="#AAFFFFFF" android:textSize="13sp"
+        android:gravity="center" android:padding="8dp" android:background="#FF2A2A2A"/>
+    <!-- Page selector -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:paddingLeft="16dp" android:paddingRight="16dp"
+        android:paddingTop="6dp" android:paddingBottom="6dp" android:background="#FF222222"
+        android:gravity="center_vertical">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Page:" android:textColor="#AAFFFFFF" android:textSize="13sp"/>
+        <SeekBar android:id="@+id/sb_page_select" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:layout_marginLeft="10dp" android:progressTint="@color/primary"/>
+    </LinearLayout>
+    <!-- PDF page + crop overlay -->
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <ImageView android:id="@+id/iv_crop_page" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:scaleType="fitCenter"/>
+        <com.swiftdoc.pdf22449.utils.CropOverlayView android:id="@+id/crop_overlay"
+            android:layout_width="match_parent" android:layout_height="match_parent"/>
+    </FrameLayout>
+    <ProgressBar android:id="@+id/pb_crop" android:layout_width="match_parent"
+        android:layout_height="3dp" style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true" android:indeterminateTint="@color/primary" android:visibility="gone"/>
+    <!-- Bottom buttons -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:padding="12dp" android:background="#FF1A1A1A">
+        <Button android:id="@+id/btn_auto_crop" android:layout_width="0dp"
+            android:layout_height="48dp" android:layout_weight="1"
+            android:text="✨ Auto Crop" android:backgroundTint="@color/teal_medium"
+            android:textColor="@color/white" android:layout_marginEnd="6dp"/>
+        <Button android:id="@+id/btn_do_crop" android:layout_width="0dp"
+            android:layout_height="48dp" android:layout_weight="1"
+            android:text="✂️ Apply" android:backgroundTint="@color/green_medium"
+            android:textColor="@color/white" android:layout_marginHorizontal="3dp"/>
+        <Button android:id="@+id/btn_save_cropped" android:layout_width="0dp"
+            android:layout_height="48dp" android:layout_weight="1"
+            android:text="💾 Save PDF" android:backgroundTint="@color/primary"
+            android:textColor="@color/white" android:layout_marginStart="6dp"/>
+    </LinearLayout>
+</LinearLayout>

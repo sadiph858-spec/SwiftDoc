@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LeafPDF</string>
-    <string name="tagline">Your Smart PDF Utility</string>
+    <string name="app_name">SwiftDoc</string>
+    <string name="tagline">PDF Reader, Scanner &amp; Tools</string>
     <string name="privacy_title">Privacy Policy</string>
-    <string name="privacy_text">PRIVACY POLICY — LeafPDF\n\nEffective Date: January 1, 2025\n\nLeafPDF ("we", "our", or "the app") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you use our application.\n\n1. INFORMATION WE COLLECT\nLeafPDF does not collect or transmit any personal data to external servers. All PDF files, reading history, and preferences are stored locally on your device only.\n\n2. STORAGE ACCESS\nWe request storage permission solely to scan for and open PDF files on your device. We do not upload, share, or transmit your files to any server.\n\n3. ADVERTISING\nLeafPDF may display advertisements powered by Google AdMob. AdMob may collect device information for personalized ads. You can opt out of personalized ads in your device settings.\n\n4. ANALYTICS\nWe may use anonymized, aggregate usage analytics to improve the app. No personally identifiable information is collected.\n\n5. THIRD-PARTY LIBRARIES\nWe use open-source libraries for PDF rendering and image processing. These libraries do not collect user data.\n\n6. DATA SECURITY\nAll your data remains on your device. We implement security measures to protect locally stored data.\n\n7. CHILDREN\'S PRIVACY\nLeafPDF is not intended for children under 13. We do not knowingly collect data from children.\n\n8. CHANGES TO THIS POLICY\nWe may update this Privacy Policy from time to time. Continued use of the app constitutes acceptance of the updated policy.\n\n9. CONTACT US\nIf you have questions, contact us at: support@leafpdf.app\n\nBy tapping "Allow", you agree to this Privacy Policy and grant the necessary permissions for the app to function.\n\nScroll to the bottom to enable the buttons.</string>
+    <string name="privacy_text">PRIVACY POLICY — SwiftDoc\n\nEffective Date: January 1, 2025\n\nSwiftDoc ("we", "our", or "the app") is committed to protecting your privacy.\n\n1. INFORMATION WE COLLECT\nSwiftDoc does not collect or transmit any personal data. All PDF files and preferences are stored locally on your device.\n\n2. STORAGE ACCESS\nWe request storage permission solely to open, save and manage PDF files on your device.\n\n3. CAMERA ACCESS\nCamera permission is used only for the document scanning feature. Photos are processed on-device and never uploaded.\n\n4. ADVERTISING\nSwiftDoc may display advertisements powered by Google AdMob. AdMob may collect device information for personalized ads.\n\n5. DATA SECURITY\nAll your data remains on your device. We do not have access to your files.\n\n6. CHILDREN\'S PRIVACY\nSwiftDoc is not intended for children under 13.\n\n7. CONTACT\nIf you have questions: support@swiftdoc.app\n\nBy tapping "Allow", you agree to this Privacy Policy.\n\nScroll to the bottom to enable the buttons.</string>
     <string name="btn_allow">✅ Allow &amp; Continue</string>
     <string name="btn_deny">❌ Deny &amp; Exit</string>
     <string name="scroll_hint">↓ Scroll to read the full policy</string>
@@ -11,4 +11,40 @@
     <string name="no_pdfs">No PDF files found.\nTap + to open a PDF.</string>
     <string name="loading_pdf">Loading PDF…</string>
     <string name="error_loading">Failed to load PDF</string>
+    <string name="tab_all">All Files</string>
+    <string name="tab_recent">Recent</string>
+    <string name="tab_favorites">Favorites</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search PDF files…</string>
+    <string name="open_pdf">Open PDF</string>
+    <string name="select_pdf">Select a PDF file</string>
+    <string name="share_pdf">Share PDF</string>
+    <string name="favorite">Favorite</string>
+    <string name="more_options">More options</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="remove_from_recent">Remove from Recent</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="refresh">Refresh</string>
+    <string name="clear_recent">Clear Recent</string>
+    <string name="no_favorites">No favorites yet.</string>
+    <string name="no_results">No results found.</string>
+    <string name="added_to_favorites">Added to favorites ★</string>
+    <string name="removed_from_favorites">Removed from favorites</string>
+    <string name="removed_from_recent">Removed from recents</string>
+    <string name="recent_cleared">Recent cleared</string>
+    <string name="file_not_found">File not found</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_rationale">SwiftDoc needs storage permission to find PDF files.</string>
+    <string name="grant">Grant</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_denied_msg">Storage permission denied.\nTap + to open a PDF manually.</string>
+    <string name="error_opening_file">Could not open file</string>
+    <string name="error_invalid_pdf">Not a valid PDF</string>
+    <string name="error_no_file">No file path provided</string>
+    <string name="error_file_not_found">File not found</string>
+    <string name="error_sharing">Cannot share file</string>
+    <string name="go_to_first_page">First Page</string>
+    <string name="go_to_last_page">Last Page</string>
+    <string name="page_indicator_default">— / —</string>
 </resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#FF000000">
+    <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar_scan"
+            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary" app:titleTextColor="@color/white"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <!-- Camera preview -->
+    <androidx.camera.view.PreviewView android:id="@+id/camera_preview"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+    <!-- Scanned image preview -->
+    <ImageView android:id="@+id/iv_scan_preview"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:scaleType="fitCenter" android:background="#FF000000" android:visibility="gone"/>
+    <!-- Controls -->
+    <ProgressBar android:id="@+id/pb_scan" android:layout_width="match_parent"
+        android:layout_height="4dp" style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true" android:indeterminateTint="@color/primary" android:visibility="gone"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="12dp" android:background="#FF1A1A1A">
+        <Button android:id="@+id/btn_capture" android:layout_width="match_parent"
+            android:layout_height="52dp" android:text="📷 Scan Page"
+            android:backgroundTint="@color/primary" android:textColor="@color/white"
+            android:textSize="16sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:visibility="gone">
+            <Button android:id="@+id/btn_retake" android:layout_width="0dp"
+                android:layout_height="44dp" android:layout_weight="1"
+                android:text="🔄 Retake" android:backgroundTint="#FF455A64"
+                android:textColor="@color/white" android:layout_marginEnd="6dp" android:visibility="gone"/>
+            <Button android:id="@+id/btn_add_more" android:layout_width="0dp"
+                android:layout_height="44dp" android:layout_weight="1"
+                android:text="+ Add Page" android:backgroundTint="@color/teal_medium"
+                android:textColor="@color/white" android:layout_marginStart="6dp" android:visibility="gone"/>
+        </LinearLayout>
+        <Button android:id="@+id/btn_scan_convert" android:layout_width="match_parent"
+            android:layout_height="52dp" android:text="💾 Convert to PDF"
+            android:backgroundTint="@color/green_dark" android:textColor="@color/white"
+            android:textSize="15sp" android:textStyle="bold"
+            android:layout_marginTop="8dp" android:visibility="gone"/>
+    </LinearLayout>
+</LinearLayout>
