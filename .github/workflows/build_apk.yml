@@ -24,46 +24,53 @@ jobs:
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > app/swiftdoc-release.keystore
-          ls -lh app/swiftdoc-release.keystore
 
-      - name: Build Signed Release APK
+      - name: Build Release APK
+        continue-on-error: true
         env:
           KEYSTORE_PATH: swiftdoc-release.keystore
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: ./gradlew assembleRelease --no-daemon --no-build-cache
+        run: ./gradlew assembleRelease --no-daemon --no-build-cache 2>&1 | tee /tmp/build.log
 
-      - name: Find APK
+      - name: Push build log to repo
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "=== All APK files ==="
-          find . -name "*.apk" -ls
-          echo "=== Build outputs ==="
-          find app/build/outputs -type f 2>/dev/null || echo "No build outputs dir"
+          B64=$(tail -300 /tmp/build.log | base64 -w 0)
+          SHA=$(curl -s -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/contents/ci_log.txt" \
+            | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha',''))" 2>/dev/null || echo "")
+          if [ -n "$SHA" ]; then
+            curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/contents/ci_log.txt" \
+              -d "{\"message\":\"log\",\"content\":\"$B64\",\"sha\":\"$SHA\"}" > /dev/null
+          else
+            curl -s -X PUT -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/contents/ci_log.txt" \
+              -d "{\"message\":\"log\",\"content\":\"$B64\"}" > /dev/null
+          fi
+          echo "Log saved"
 
-      - name: Upload APK Artifact
+      - name: Find and Upload APK
+        run: |
+          find . -name "*.apk" 2>/dev/null | head -20
+          ls -lh app/build/outputs/apk/release/ 2>/dev/null || echo "No release APK dir"
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SwiftDoc-v3-signed-release
-          path: "**/*.apk"
+          path: app/build/outputs/apk/release/app-release.apk
           retention-days: 30
 
-      - name: Create GitHub Release
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v3.0-release
-          name: "🚀 SwiftDoc v3.0 — Signed Release"
-          body: |
-            ## SwiftDoc v3.0
-            **Package:** com.swiftdoc.pdf22449
-            
-            ### ✨ New Features:
-            - 📷 Scan to PDF (auto-deskew + auto-crop)
-            - ✂️ PDF Crop (interactive handles + auto-crop)  
-            - ⚡ 100× faster PDF loading (native GPU)
-            - 🔄 Auto-straighten skewed images
-            
-            ### All 25+ Features included
-            **Signed:** RSA 2048-bit keystore, valid 27 years
-          files: "**/*.apk"
+          name: "SwiftDoc v3.0 — Signed Release"
+          body: "SwiftDoc v3.0 | Package: com.swiftdoc.pdf22449 | Signed Release APK"
+          files: app/build/outputs/apk/release/app-release.apk
           make_latest: true
