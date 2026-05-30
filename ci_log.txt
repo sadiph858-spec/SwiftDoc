@@ -14,22 +14,48 @@ To honour the JVM settings for this build a single-use Daemon process will be fo
 Daemon will be stopped at the end of the build 
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preReleaseBuild UP-TO-DATE
-> Task :app:dataBindingMergeDependencyArtifactsRelease FAILED
+> Task :app:generateReleaseResValues
+> Task :app:generateReleaseResources
+> Task :app:dataBindingMergeDependencyArtifactsRelease
+> Task :app:packageReleaseResources
+> Task :app:mergeReleaseResources
+> Task :app:parseReleaseLocalResources
+> Task :app:javaPreCompileRelease
+> Task :app:dataBindingGenBaseClassesRelease
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:checkReleaseAarMetadata
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:extractProguardFiles
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:processReleaseManifestForPackage
+> Task :app:processReleaseResources
+> Task :app:mergeReleaseNativeLibs
+
+> Task :app:compileReleaseJavaWithJavac FAILED
+/home/runner/work/SwiftDoc/SwiftDoc/app/src/main/java/com/swiftdoc/pdf22449/activities/ScanActivity.java:33: error: package com.google.common.util.concurrent does not exist
+import com.google.common.util.concurrent.ListenableFuture;
+                                        ^
+/home/runner/work/SwiftDoc/SwiftDoc/app/src/main/java/com/swiftdoc/pdf22449/activities/CropActivity.java:40: error: cannot find symbol
+    private CropOverlayView cropOverlay;
+            ^
+  symbol:   class CropOverlayView
+  location: class CropActivity
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+2 errors
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:dataBindingMergeDependencyArtifactsRelease'.
-> Could not resolve all files for configuration ':app:releaseCompileClasspath'.
-   > Could not find com.google.mlkit:document-scanner:16.0.0-beta1.
-     Required by:
-         project :app
+Execution failed for task ':app:compileReleaseJavaWithJavac'.
+> Compilation failed; see the compiler error output for details.
 
 * Try:
-> Run with --stacktrace option to get the stack trace.
-> Run with --info or --debug option to get more log output.
+> Run with --info option to get more log output.
 > Run with --scan to get full insights.
-> Get more help at https://help.gradle.org.
 
-BUILD FAILED in 27s
-1 actionable task: 1 executed
+BUILD FAILED in 57s
+19 actionable tasks: 19 executed
