@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Matrix;
-import android.graphics.RectF;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -30,7 +27,6 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.common.util.concurrent.ListenableFuture;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
@@ -46,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 public class ScanActivity extends AppCompatActivity {
@@ -56,8 +52,7 @@ public class ScanActivity extends AppCompatActivity {
     private Button      btnCapture, btnAddMore, btnConvert, btnRetake;
     private ProgressBar pb;
 
-    private ImageCapture   imageCapture;
-    private ExecutorService cameraExecutor;
+    private ImageCapture imageCapture;
     private final List<Bitmap> capturedPages = new ArrayList<>();
     private static final int REQ_CAMERA = 200;
 
@@ -79,11 +74,9 @@ public class ScanActivity extends AppCompatActivity {
         btnRetake   = findViewById(R.id.btn_retake);
         pb          = findViewById(R.id.pb_scan);
 
-        cameraExecutor = Executors.newSingleThreadExecutor();
-
         btnCapture.setOnClickListener(v -> capturePhoto());
         btnAddMore.setOnClickListener(v -> showCamera());
-        btnRetake.setOnClickListener(v  -> { capturedPages.remove(capturedPages.size()-1); showCamera(); });
+        btnRetake.setOnClickListener(v  -> { if (!capturedPages.isEmpty()) capturedPages.remove(capturedPages.size()-1); showCamera(); });
         btnConvert.setOnClickListener(v -> buildPDF());
 
         if (hasCameraPermission()) startCamera();
@@ -103,10 +96,9 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     private void startCamera() {
-        ListenableFuture<ProcessCameraProvider> fut = ProcessCameraProvider.getInstance(this);
-        fut.addListener(() -> {
+        ProcessCameraProvider.getInstance(this).addListener(() -> {
             try {
-                ProcessCameraProvider cp = fut.get();
+                ProcessCameraProvider cp = ProcessCameraProvider.getInstance(this).get();
                 Preview preview = new Preview.Builder().build();
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
                 imageCapture = new ImageCapture.Builder()
@@ -116,7 +108,7 @@ public class ScanActivity extends AppCompatActivity {
                 cp.unbindAll();
                 cp.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture);
                 showCamera();
-            } catch (Exception e) {
+            } catch (ExecutionException | InterruptedException e) {
                 Toast.makeText(this, "Camera error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }, ContextCompat.getMainExecutor(this));
@@ -129,7 +121,6 @@ public class ScanActivity extends AppCompatActivity {
         btnAddMore.setVisibility(View.GONE);
         btnRetake.setVisibility(View.GONE);
         btnConvert.setVisibility(View.GONE);
-        btnConvert.setText("Convert " + capturedPages.size() + " pages to PDF");
     }
 
     private void capturePhoto() {
@@ -137,18 +128,16 @@ public class ScanActivity extends AppCompatActivity {
         pb.setVisibility(View.VISIBLE);
         File photoFile = new File(getCacheDir(), "scan_" + System.currentTimeMillis() + ".jpg");
         ImageCapture.OutputFileOptions opts = new ImageCapture.OutputFileOptions.Builder(photoFile).build();
-
         imageCapture.takePicture(opts, ContextCompat.getMainExecutor(this),
             new ImageCapture.OnImageSavedCallback() {
                 @Override public void onImageSaved(@NonNull ImageCapture.OutputFileResults r) {
                     pb.setVisibility(View.GONE);
-                    // Process in background: decode → deskew → enhance → crop borders
                     AsyncTask.execute(() -> {
-                        Bitmap raw = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        Bitmap deskewed  = ImageProcessorUtils.autoDeskew(raw);
-                        Bitmap enhanced  = ImageProcessorUtils.enhanceForScan(deskewed);
-                        Bitmap cropped   = ImageProcessorUtils.cropWhitespace(enhanced, 20);
-                        if (deskewed != raw)   raw.recycle();
+                        Bitmap raw      = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        Bitmap deskewed = ImageProcessorUtils.autoDeskew(raw);
+                        Bitmap enhanced = ImageProcessorUtils.enhanceForScan(deskewed);
+                        Bitmap cropped  = ImageProcessorUtils.cropWhitespace(enhanced, 20);
+                        if (deskewed != raw)     raw.recycle();
                         if (enhanced != deskewed) deskewed.recycle();
                         capturedPages.add(cropped);
                         runOnUiThread(() -> showPreview(cropped));
@@ -156,7 +145,7 @@ public class ScanActivity extends AppCompatActivity {
                 }
                 @Override public void onError(@NonNull ImageCaptureException e) {
                     pb.setVisibility(View.GONE);
-                    Toast.makeText(ScanActivity.this,"Capture failed",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ScanActivity.this, "Capture failed", Toast.LENGTH_SHORT).show();
                 }
             });
     }
@@ -189,7 +178,7 @@ public class ScanActivity extends AppCompatActivity {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bmp.compress(Bitmap.CompressFormat.JPEG, 90, baos);
                     Image img = Image.getInstance(baos.toByteArray());
-                    img.scaleToFit(PageSize.A4.getWidth()-20, PageSize.A4.getHeight()-20);
+                    img.scaleToFit(PageSize.A4.getWidth() - 20, PageSize.A4.getHeight() - 20);
                     img.setAlignment(Image.ALIGN_CENTER);
                     doc.add(img);
                 }
@@ -200,23 +189,22 @@ public class ScanActivity extends AppCompatActivity {
                     new androidx.appcompat.app.AlertDialog.Builder(this)
                         .setTitle("✅ Scan Complete!")
                         .setMessage(capturedPages.size() + " pages saved to Downloads:\n" + fname)
-                        .setPositiveButton("Open PDF", (d, w) -> {
+                        .setPositiveButton("Open PDF", (d, w) ->
                             startActivity(new Intent(this, PDFViewerActivity.class)
                                 .putExtra("pdf_path", out.getAbsolutePath())
-                                .putExtra("pdf_name", fname));
-                        })
+                                .putExtra("pdf_name", fname)))
                         .setNegativeButton("OK", null).show();
                 });
             } catch (Exception e) {
                 runOnUiThread(() -> {
-                    pb.setVisibility(View.GONE); btnConvert.setEnabled(true);
+                    pb.setVisibility(View.GONE);
+                    btnConvert.setEnabled(true);
                     Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
             }
         });
     }
 
-    @Override protected void onDestroy() { super.onDestroy(); cameraExecutor.shutdown(); }
     @Override public boolean onOptionsItemSelected(MenuItem i) {
         if (i.getItemId() == android.R.id.home) { onBackPressed(); return true; }
         return super.onOptionsItemSelected(i);
